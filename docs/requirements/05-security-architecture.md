@@ -49,7 +49,7 @@ The platform implements a comprehensive security strategy based on defense-in-de
 
 **Resource-Level Permissions**
 
-- Owner, Editor, Viewer model for document and data access
+- Owner, Editor, Viewer model for content and data access
 - Department and team-based access controls
 - Project-specific permissions with time-limited access
 - Delegation capabilities for temporary permission sharing
@@ -86,7 +86,7 @@ The platform implements a comprehensive security strategy based on defense-in-de
 - **Public**: Marketing materials, public documentation
 - **Internal**: Business data, internal communications
 - **Confidential**: Customer PII, business plans, financial data
-- **Restricted**: Payment information, security credentials, legal documents
+- **Restricted**: Payment information, security credentials, legal records
 
 **Data Loss Prevention (DLP)**
 
@@ -109,7 +109,7 @@ The platform implements a comprehensive security strategy based on defense-in-de
 - Pseudonymization of personal identifiers where possible
 - Automated data retention policies with secure deletion
 - Privacy impact assessments for new features
-- Data processing registers and compliance documentation
+- Data processing registers and compliance records
 
 ## Network Security Architecture
 

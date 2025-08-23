@@ -29,7 +29,6 @@
 ### Platform Services
 - **Identity Management**: Authentication, authorization, user management
 - **Notification System**: Email, SMS, push notifications
-- **File Management**: Upload, storage, retrieval of documents/media
 - **Audit & Logging**: Track all system activities and changes
 - **Configuration Management**: Feature flags, environment-specific settings
 

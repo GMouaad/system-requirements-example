@@ -474,7 +474,7 @@ public async Task UserRegistrationJourney_CompleteFlow_ShouldSucceed()
 
 ```csharp
 [Test]
-public async Task DocumentUploadAndProcessingWorkflow_ShouldCompleteSuccessfully()
+public async Task ContentCreationAndProcessingWorkflow_ShouldCompleteSuccessfully()
 {
     var page = await Browser.NewPageAsync();
     
@@ -483,40 +483,38 @@ public async Task DocumentUploadAndProcessingWorkflow_ShouldCompleteSuccessfully
         // Login as test user
         await LoginAsTestUser(page);
         
-        // Navigate to document upload
-        await page.GotoAsync("/documents/upload");
+        // Navigate to content creation
+        await page.GotoAsync("/content/create");
         
-        // Upload document
-        var fileInput = page.Locator("input[type='file']");
-        await fileInput.SetInputFilesAsync("test-files/sample-document.pdf");
+        // Create content
+        await page.FillAsync("#contentTitle", "Test Content Item");
+        await page.SelectOptionAsync("#category", "General");
+        await page.FillAsync("#description", "This is a test content item for validation");
+        await page.ClickAsync("#saveButton");
         
-        await page.FillAsync("#documentTitle", "Test Document");
-        await page.SelectOptionAsync("#category", "Report");
-        await page.ClickAsync("#uploadButton");
+        // Wait for creation completion
+        await page.WaitForSelectorAsync(".creation-success", new() { Timeout = 30000 });
         
-        // Wait for upload completion
-        await page.WaitForSelectorAsync(".upload-success", new() { Timeout = 30000 });
+        // Verify content appears in list
+        await page.GotoAsync("/content");
+        var contentLink = page.Locator("a", new() { HasTextString = "Test Content Item" });
+        await Expect(contentLink).ToBeVisibleAsync();
         
-        // Verify document appears in list
-        await page.GotoAsync("/documents");
-        var documentLink = page.Locator("a", new() { HasTextString = "Test Document" });
-        await Expect(documentLink).ToBeVisibleAsync();
-        
-        // Verify document metadata
-        await documentLink.ClickAsync();
+        // Verify content metadata
+        await contentLink.ClickAsync();
         await page.WaitForLoadStateAsync(LoadState.NetworkIdle);
         
-        var title = await page.TextContentAsync(".document-title");
-        var category = await page.TextContentAsync(".document-category");
+        var title = await page.TextContentAsync(".content-title");
+        var category = await page.TextContentAsync(".content-category");
         var status = await page.TextContentAsync(".processing-status");
         
-        Assert.That(title, Is.EqualTo("Test Document"));
-        Assert.That(category, Is.EqualTo("Report"));
-        Assert.That(status, Is.EqualTo("Processed"));
+        Assert.That(title, Is.EqualTo("Test Content Item"));
+        Assert.That(category, Is.EqualTo("General"));
+        Assert.That(status, Is.EqualTo("Active"));
         
         // Verify search functionality
-        await page.GotoAsync("/documents/search");
-        await page.FillAsync("#searchQuery", "Test Document");
+        await page.GotoAsync("/content/search");
+        await page.FillAsync("#searchQuery", "Test Content Item");
         await page.ClickAsync("#searchButton");
         
         var searchResults = page.Locator(".search-result");
@@ -579,7 +577,7 @@ export let options = {
         "Throughput": "500 requests/second",
         "ErrorRate": "< 0.5%"
       },
-      "DocumentProcessing": {
+      "ContentProcessing": {
         "ResponseTime95thPercentile": "2000ms",
         "Throughput": "100 requests/second",
         "ErrorRate": "< 1%"
@@ -719,15 +717,15 @@ public class TestDataGenerator
     public IEnumerable<User> GenerateUsers(int count) =>
         Enumerable.Range(0, count).Select(_ => GenerateValidUser());
         
-    public Document GenerateDocument(Guid userId) => new()
+    public ContentItem GenerateContentItem(Guid userId) => new()
     {
         Id = Guid.NewGuid(),
         Title = _faker.Lorem.Sentence(3, 5),
-        Content = _faker.Lorem.Paragraphs(3, 10),
-        Category = _faker.PickRandom("Report", "Presentation", "Spreadsheet", "Image"),
+        Description = _faker.Lorem.Paragraphs(2, 5),
+        Category = _faker.PickRandom("General", "Report", "Presentation", "Article"),
         UserId = userId,
-        FileSize = _faker.Random.Long(1024, 10485760), // 1KB to 10MB
-        MimeType = _faker.PickRandom("application/pdf", "text/plain", "image/jpeg"),
+        ContentSize = _faker.Random.Long(1024, 1048576), // 1KB to 1MB
+        ContentType = _faker.PickRandom("text/plain", "text/html", "application/json"),
         CreatedAt = _faker.Date.Between(DateTime.UtcNow.AddDays(-90), DateTime.UtcNow)
     };
 }

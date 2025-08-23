@@ -369,7 +369,7 @@ X-User-Id: usr_123e4567-e89b-12d3-a456-426614174000
 
 **Core Business Operations**:
 - Transaction completion rates and processing times
-- Document upload success rates and processing times
+- Content creation success rates and processing times
 - Search query performance and result relevance
 - Collaboration and sharing activity metrics
 

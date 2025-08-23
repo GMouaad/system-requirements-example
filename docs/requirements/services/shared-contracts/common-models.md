@@ -139,10 +139,8 @@ com.platform.user.activated.v1
 com.platform.user.deactivated.v1
 com.platform.user.profile.updated.v1
 com.platform.organization.created.v1
-com.platform.document.uploaded.v1
-com.platform.document.processed.v1
-com.platform.payment.initiated.v1
-com.platform.payment.completed.v1
+com.platform.content.created.v1
+com.platform.content.updated.v1
 com.platform.notification.sent.v1
 ```
 
@@ -191,25 +189,24 @@ com.platform.notification.sent.v1
 }
 ```
 
-**Document Domain Events**:
+**Content Domain Events**:
 
 ```json
 {
-  "type": "com.platform.document.uploaded.v1",
+  "type": "com.platform.content.created.v1",
   "data": {
-    "documentId": "doc_123e4567-e89b-12d3-a456-426614174000",
+    "contentId": "cnt_123e4567-e89b-12d3-a456-426614174000",
     "userId": "usr_123e4567-e89b-12d3-a456-426614174000",
     "organizationId": "org_123e4567-e89b-12d3-a456-426614174000",
-    "fileName": "financial-report-q3.pdf",
-    "fileSize": 2048576,
-    "mimeType": "application/pdf",
-    "category": "financial",
-    "tags": ["quarterly", "report", "finance"],
+    "title": "Quarterly Business Report",
+    "contentType": "report",
+    "category": "business",
+    "tags": ["quarterly", "report", "business"],
     "metadata": {
-      "uploadMethod": "web",
+      "creationMethod": "web",
       "clientIp": "192.168.1.100",
-      "virusScanned": true,
-      "ocrRequired": true
+      "status": "draft",
+      "requiresReview": true
     }
   }
 }
@@ -322,7 +319,7 @@ com.platform.notification.sent.v1
 
 - Email addresses unique across all user accounts
 - Organization slugs unique for URL generation
-- Document names unique within organization or folder
+- Content titles unique within organization or workspace
 - API keys unique across all client applications
 
 **Referential Integrity**
