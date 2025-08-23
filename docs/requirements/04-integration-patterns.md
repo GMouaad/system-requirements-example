@@ -151,19 +151,19 @@
 
 ### Message Bus Configuration
 
-**Azure Service Bus Topics and Subscriptions**
+**Cloud-Native Event Streaming**
 
-- One topic per event type for scalability and filtering
-- Subscription per consuming service with appropriate filters
-- Dead letter queues for failed message processing
-- Duplicate detection based on event ID
+- NATS JetStream or Apache Kafka for high-throughput event streaming
+- CloudEvents specification for interoperable event format
+- Event sourcing support with stream-based persistence
+- Kubernetes-native scaling and fault tolerance
 
 **Message Durability and Reliability**
 
-- Messages persisted until successfully processed
-- Automatic retry with exponential backoff
+- Messages persisted until successfully processed or expired
+- Automatic retry with exponential backoff and jitter
 - Circuit breaker pattern for failing subscribers
-- Poison message handling with manual intervention queue
+- Dead letter queues for poison message handling
 
 ## Service Discovery and Communication
 
@@ -178,9 +178,9 @@
 
 **Static Configuration (Alternative)**
 
-- Service endpoints configured through environment variables
-- DNS-based service discovery within Azure infrastructure
-- Configuration management through Azure App Configuration
+- Service endpoints configured through Kubernetes ConfigMaps
+- DNS-based service discovery within Kubernetes cluster
+- Configuration management through cloud-native config systems
 - Suitable for stable, well-known service endpoints
 
 ### Load Balancing Strategies

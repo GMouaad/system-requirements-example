@@ -11,9 +11,9 @@ The platform implements a comprehensive security strategy based on defense-in-de
 **Primary Authentication**
 
 - OAuth 2.0 and OpenID Connect as primary authentication protocols
-- Azure Active Directory B2C for external user management
-- Integration with corporate Azure AD for internal users
-- Support for social identity providers (Google, Microsoft, LinkedIn)
+- OpenID Connect Provider (Keycloak, Auth0, or cloud-native solution)
+- Integration with corporate identity providers via SAML/OIDC federation
+- Support for social identity providers (Google, GitHub, LinkedIn)
 
 **Multi-Factor Authentication (MFA)**
 
@@ -61,15 +61,15 @@ The platform implements a comprehensive security strategy based on defense-in-de
 **Data at Rest**
 
 - AES-256 encryption for all database storage
-- Transparent Data Encryption (TDE) enabled on Azure SQL databases
-- Azure Key Vault for encryption key management with automatic rotation
+- Database-level encryption enabled on PostgreSQL with transparent encryption
+- HashiCorp Vault for encryption key management with automatic rotation
 - Field-level encryption for highly sensitive data (PII, financial information)
 
 **Data in Transit**
 
 - TLS 1.3 minimum for all external communications
-- mTLS (mutual TLS) for internal service-to-service communication
-- Certificate management through Azure Key Vault
+- mTLS (mutual TLS) for internal service-to-service communication via service mesh
+- Certificate management through cert-manager and HashiCorp Vault
 - Perfect Forward Secrecy (PFS) for all encrypted communications
 
 **Key Management**
@@ -117,17 +117,17 @@ The platform implements a comprehensive security strategy based on defense-in-de
 
 **Firewall and Network Segmentation**
 
-- Azure Network Security Groups (NSGs) for micro-segmentation
-- Application-level firewalls for web traffic inspection
-- DDoS protection with Azure DDoS Protection Standard
-- Network isolation between production, staging, and development environments
+- Kubernetes Network Policies for micro-segmentation
+- Istio/Linkerd service mesh for traffic management and security
+- Cloud-native DDoS protection and WAF (CloudFlare, AWS Shield, etc.)
+- Network isolation between production, staging, and development namespaces
 
 **API Security**
 
 - OAuth 2.0 scopes for API access control
 - Rate limiting with tiered limits based on user type and subscription
-- API key management for third-party integrations
-- Request signing for high-value API operations
+- API key management for third-party integrations through secrets management
+- Request signing for high-value API operations using HTTP Signature standard
 
 ### Application Security
 
@@ -167,10 +167,10 @@ The platform implements a comprehensive security strategy based on defense-in-de
 
 **Security Information and Event Management (SIEM)**
 
-- Azure Sentinel for centralized security monitoring
-- Real-time threat detection and automated response
-- Integration with threat intelligence feeds
-- Custom detection rules for application-specific threats
+- ELK Stack (Elasticsearch, Logstash, Kibana) or Grafana Loki for security monitoring
+- Falco for runtime security monitoring in Kubernetes
+- Integration with threat intelligence feeds via open standards
+- Custom detection rules using cloud-native security tools
 
 **Behavioral Analytics**
 

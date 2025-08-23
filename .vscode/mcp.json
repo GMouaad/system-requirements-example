@@ -6,6 +6,10 @@
     },
     "memorizer": {
         "url": "http://localhost:9000/sse"
+    },
+    "microsoft.docs.mcp": {
+      "type": "http",
+      "url": "https://learn.microsoft.com/api/mcp"
     }
   }
 }

@@ -51,23 +51,23 @@ The platform follows a Self-Contained Systems (SCS) architecture pattern with th
 ### Core Technologies
 - **Backend Framework**: .NET 8+ with ASP.NET Core
 - **Frontend**: [To be defined based on requirements - React/Angular/Blazor]
-- **Cloud Platform**: Microsoft Azure
-- **Container Orchestration**: Azure Container Apps or Azure Kubernetes Service
-- **API Gateway**: YARP (Yet Another Reverse Proxy) or Azure API Management
+- **Cloud Platform**: Cloud-agnostic (Kubernetes on any provider)
+- **Container Orchestration**: Kubernetes with cloud-native patterns
+- **API Gateway**: Cloud-native API Gateway (Kong, Ambassador, or Istio)
 
 ### Data & Storage
-- **Primary Database**: Azure SQL Database for transactional data
-- **Document Store**: Azure Cosmos DB for flexible schema requirements
-- **Caching**: Azure Redis Cache for performance optimization
-- **File Storage**: Azure Blob Storage for documents and media
-- **Message Bus**: Azure Service Bus for reliable messaging
+- **Primary Database**: PostgreSQL for transactional data with high availability
+- **Document Store**: MongoDB or CouchDB for flexible schema requirements
+- **Caching**: Redis for performance optimization and session storage
+- **File Storage**: S3-compatible object storage (MinIO, AWS S3, Google Cloud Storage)
+- **Message Bus**: NATS JetStream or Apache Kafka for reliable messaging
 
 ### DevOps & Monitoring
-- **Source Control**: Git with GitHub/Azure DevOps
-- **CI/CD**: GitHub Actions or Azure DevOps Pipelines
-- **Monitoring**: Azure Application Insights and Azure Monitor
-- **Logging**: Structured logging with Serilog
-- **Security**: Azure Key Vault for secrets management
+- **Source Control**: Git with GitHub or GitLab
+- **CI/CD**: GitHub Actions, GitLab CI, or Tekton pipelines
+- **Monitoring**: OpenTelemetry, Prometheus, Grafana, and Jaeger
+- **Logging**: Structured logging with Serilog and cloud-native log aggregation
+- **Security**: HashiCorp Vault for secrets management with External Secrets Operator
 
 ## System Boundaries
 
@@ -89,16 +89,16 @@ The platform follows a Self-Contained Systems (SCS) architecture pattern with th
 - Users have reliable internet connectivity
 - Modern web browser support (latest 2 versions of major browsers)
 - English language support initially (internationalization planned for future)
-- Azure cloud infrastructure availability and reliability
-- Team has .NET and Azure expertise
+- Kubernetes cluster availability and reliability across cloud providers
+- Team has .NET and cloud-native expertise
 - Regulatory compliance requirements are limited initially
 
 ## Constraints
 
 ### Technical Constraints
-- Must use .NET ecosystem and Microsoft Azure
+- Must use .NET ecosystem and cloud-native technologies
 - Existing corporate security policies must be maintained
-- Integration with existing Active Directory required
+- Integration with existing identity providers using OpenID Connect
 - Must support existing business processes during transition
 
 ### Business Constraints

@@ -34,69 +34,26 @@ All API responses follow a consistent envelope structure to provide metadata and
 
 ### Error Response Structure
 
-Standardized error responses provide consistent information for client-side error handling.
+Standardized error responses follow RFC 7807 Problem Details for HTTP APIs specification.
 
 ```json
 {
+  "type": "https://platform.com/problems/validation-error",
+  "title": "Validation Failed",
+  "status": 400,
+  "detail": "The provided email address is not valid",
+  "instance": "/api/users/create",
+  "timestamp": "2025-08-23T10:30:00Z",
+  "traceId": "trace_abc123def456",
+  "requestId": "req_123456789",
   "errors": [
     {
-      "id": "error_123456",
-      "status": "400",
-      "code": "VALIDATION_ERROR",
-      "title": "Validation Failed",
-      "detail": "The provided email address is not valid",
-      "source": {
-        "pointer": "/data/attributes/email",
-        "parameter": "email"
-      },
-      "meta": {
-        "timestamp": "2025-08-23T10:30:00Z",
-        "requestId": "req_123456789",
-        "field": "email",
-        "rejectedValue": "invalid-email"
-      }
+      "field": "email",
+      "code": "INVALID_FORMAT",
+      "message": "Email address format is invalid",
+      "rejectedValue": "invalid-email"
     }
   ]
-}
-```
-
-### Common Entity Identifiers
-
-**User Reference**
-
-```json
-{
-  "userId": "usr_123e4567-e89b-12d3-a456-426614174000",
-  "email": "user@example.com",
-  "displayName": "John Doe",
-  "avatarUrl": "https://cdn.platform.com/avatars/usr_123e4567.jpg"
-}
-```
-
-**Organization Reference**
-
-```json
-{
-  "organizationId": "org_123e4567-e89b-12d3-a456-426614174000",
-  "name": "Acme Corporation",
-  "slug": "acme-corp",
-  "logoUrl": "https://cdn.platform.com/logos/org_123e4567.jpg"
-}
-```
-
-**Address Information**
-
-```json
-{
-  "street": "123 Main Street",
-  "city": "San Francisco",
-  "state": "CA",
-  "postalCode": "94105",
-  "country": "US",
-  "coordinates": {
-    "latitude": 37.7749,
-    "longitude": -122.4194
-  }
 }
 ```
 
@@ -134,60 +91,145 @@ Standardized error responses provide consistent information for client-side erro
 }
 ```
 
-## Domain Events Schema
+## CloudEvents Domain Events
 
-### Event Envelope Structure
+### CloudEvents Specification Compliance
 
-All domain events follow a consistent structure for reliable processing and audit trails.
+All domain events follow the [CloudEvents v1.0 specification](https://cloudevents.io/) for interoperability across cloud platforms and event brokers.
 
 ```json
 {
-  "eventId": "evt_123456789",
-  "eventType": "UserRegistered",
-  "aggregateId": "usr_123e4567-e89b-12d3-a456-426614174000",
-  "aggregateType": "User",
-  "eventVersion": "1.0",
-  "occurredAt": "2025-08-23T10:30:00Z",
-  "causationId": "cmd_987654321",
-  "correlationId": "corr_456789123",
+  "specversion": "1.0",
+  "id": "user-registered-4174-7400-7567",
+  "source": "/platform/user-service",
+  "type": "com.platform.user.registered.v1",
+  "time": "2025-08-23T10:30:00Z",
+  "datacontenttype": "application/json",
+  "subject": "usr_123e4567-e89b-12d3-a456-426614174000",
   "data": {
-    // Event-specific payload
+    "userId": "usr_123e4567-e89b-12d3-a456-426614174000",
+    "email": "user@example.com",
+    "registrationMethod": "email",
+    "organizationId": "org_123e4567-e89b-12d3-a456-426614174000",
+    "metadata": {
+      "ipAddress": "192.168.1.100",
+      "userAgent": "Mozilla/5.0...",
+      "registrationSource": "web"
+    }
   },
-  "metadata": {
-    "publishedBy": "user-service",
-    "publishedAt": "2025-08-23T10:30:00Z",
-    "schemaVersion": "1.0",
-    "traceId": "trace_abc123def456",
-    "userId": "usr_123e4567-e89b-12d3-a456-426614174000"
+  "traceparent": "00-abc123def456-789012345678-01",
+  "correlationid": "corr_456789123"
+}
+```
+
+### Event Type Convention
+
+**Event Type Format**: `{domain}.{entity}.{action}.{version}`
+
+- **Domain**: `com.platform` for all platform events
+- **Entity**: The aggregate or entity being acted upon
+- **Action**: Past tense verb describing what occurred
+- **Version**: Semantic version for schema evolution
+
+**Standard Event Types**:
+
+```text
+com.platform.user.registered.v1
+com.platform.user.activated.v1
+com.platform.user.deactivated.v1
+com.platform.user.profile.updated.v1
+com.platform.organization.created.v1
+com.platform.document.uploaded.v1
+com.platform.document.processed.v1
+com.platform.payment.initiated.v1
+com.platform.payment.completed.v1
+com.platform.notification.sent.v1
+```
+
+### Event Context Attributes
+
+**Required CloudEvents Context Attributes**:
+
+- `specversion`: CloudEvents specification version (1.0)
+- `id`: Unique event identifier (UUID or similar)
+- `source`: Event producer URI identifier
+- `type`: Event type following domain convention
+- `time`: RFC 3339 timestamp when event occurred
+
+**Optional Platform-Specific Extensions**:
+
+- `subject`: Entity identifier that the event is about
+- `traceparent`: W3C Trace Context for distributed tracing
+- `correlationid`: Business process correlation identifier
+- `causationid`: Identifier of the command that caused this event
+- `tenantid`: Multi-tenant organization identifier
+
+### Event Data Schema
+
+**User Domain Events**:
+
+```json
+{
+  "type": "com.platform.user.registered.v1",
+  "data": {
+    "userId": "usr_123e4567-e89b-12d3-a456-426614174000",
+    "email": "user@example.com",
+    "firstName": "John",
+    "lastName": "Doe",
+    "registrationMethod": "email",
+    "organizationId": "org_123e4567-e89b-12d3-a456-426614174000",
+    "roles": ["user"],
+    "preferences": {
+      "language": "en",
+      "timezone": "America/Los_Angeles",
+      "notifications": {
+        "email": true,
+        "push": false
+      }
+    }
   }
 }
 ```
 
-### Common Event Types
+**Document Domain Events**:
 
-**User Events**
+```json
+{
+  "type": "com.platform.document.uploaded.v1",
+  "data": {
+    "documentId": "doc_123e4567-e89b-12d3-a456-426614174000",
+    "userId": "usr_123e4567-e89b-12d3-a456-426614174000",
+    "organizationId": "org_123e4567-e89b-12d3-a456-426614174000",
+    "fileName": "financial-report-q3.pdf",
+    "fileSize": 2048576,
+    "mimeType": "application/pdf",
+    "category": "financial",
+    "tags": ["quarterly", "report", "finance"],
+    "metadata": {
+      "uploadMethod": "web",
+      "clientIp": "192.168.1.100",
+      "virusScanned": true,
+      "ocrRequired": true
+    }
+  }
+}
+```
 
-- `UserRegistered`: New user account created
-- `UserEmailVerified`: User confirmed email address
-- `UserProfileUpdated`: User profile information changed
-- `UserDeactivated`: User account disabled
-- `UserDeleted`: User account permanently removed
+### Event Routing and Delivery
 
-**Organization Events**
+**Event Broker Integration**:
 
-- `OrganizationCreated`: New organization established
-- `OrganizationUpdated`: Organization information modified
-- `UserJoinedOrganization`: User became organization member
-- `UserLeftOrganization`: User removed from organization
-- `OrganizationDeactivated`: Organization suspended
+- **NATS JetStream**: Primary event streaming platform
+- **Apache Kafka**: High-throughput event streaming for analytics
+- **CloudEvents Bindings**: HTTP, AMQP, MQTT protocol support
+- **Dead Letter Queues**: Failed event handling and retry mechanisms
 
-**Content Events**
+**Event Delivery Guarantees**:
 
-- `DocumentCreated`: New document uploaded
-- `DocumentUpdated`: Document content or metadata changed
-- `DocumentShared`: Document shared with users or groups
-- `DocumentDeleted`: Document removed from system
-- `CommentAdded`: Comment added to document or discussion
+- **At-least-once delivery**: Events guaranteed to be delivered
+- **Idempotent consumers**: Event handlers designed for duplicate processing
+- **Ordering guarantees**: Events ordered by entity/aggregate ID
+- **Retention policies**: Event storage duration based on business requirements
 
 ## API Standards
 
@@ -319,10 +361,11 @@ All domain events follow a consistent structure for reliable processing and audi
 
 **Data Exchange Formats**
 
-- JSON as primary format for structured data
-- CSV for bulk data exports and imports
-- XML support for legacy system integration
-- Protocol Buffers for high-performance internal communication
+- JSON as primary format for structured data with JSON Schema validation
+- Protocol Buffers (gRPC) for high-performance service-to-service communication
+- CloudEvents format for all event-driven communication
+- OpenAPI 3.0 specifications for REST API documentation and contract testing
+- AsyncAPI specifications for event-driven API documentation
 
 ## Versioning Strategy
 
