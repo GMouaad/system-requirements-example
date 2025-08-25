@@ -47,18 +47,18 @@ docs/
 
 ### Core Technologies
 - **.NET 8+**: Primary development framework with ASP.NET Core
-- **Microsoft Azure**: Cloud platform for infrastructure and services
-- **Azure SQL Database**: Transactional data with potential for read replicas
-- **Azure Cosmos DB**: Document storage for flexible schema requirements
-- **Azure Service Bus**: Reliable messaging and event-driven communication
-- **Azure Application Insights**: Monitoring, logging, and observability
+- **Cloud Platform**: Any major cloud provider (AWS, Azure, GCP) for infrastructure and services
+- **Relational Database**: SQL Server, PostgreSQL, or MySQL for transactional data with read replicas
+- **Document Database**: MongoDB, Amazon DocumentDB, Azure Cosmos DB, or Google Firestore for flexible schema requirements
+- **Message Broker**: Apache Kafka, RabbitMQ, Amazon SQS/SNS, Azure Service Bus, or Google Pub/Sub for reliable messaging
+- **Observability**: OpenTelemetry with Prometheus, Grafana, Jaeger, or cloud-native monitoring solutions
 
 ### Architectural Patterns
 - **CQRS**: Command Query Responsibility Segregation for read/write optimization
 - **Event Sourcing**: For audit trails and temporal data analysis
 - **Saga Pattern**: For distributed transaction management
 - **Circuit Breaker**: For resilience in service-to-service communication
-- **API Gateway**: YARP or Azure API Management for service orchestration
+- **API Gateway**: YARP, Kong, Istio, AWS API Gateway, Azure API Management, or Google Cloud Endpoints for service orchestration
 
 ### Integration Patterns
 - **REST APIs**: Primary synchronous communication with OpenAPI 3.0 specs

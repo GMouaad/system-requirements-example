@@ -42,43 +42,42 @@ This document defines the non-functional requirements specific to [Service Name]
 
 #### CPU Requirements
 
-- **Normal Operation**: < [X]% CPU utilization
-- **Peak Load**: < [X]% CPU utilization
-- **Maximum Acceptable**: [X]% CPU utilization
+- **Normal Operation**: < [X]% CPU utilization under average load
+- **Peak Load**: < [X]% CPU utilization under maximum expected load
+- **Resource Efficiency**: Must maintain performance within allocated CPU limits
 
 #### Memory Requirements
 
-- **Base Memory**: [X] MB minimum
-- **Working Set**: [X] MB under normal load
-- **Maximum Memory**: [X] MB absolute limit
+- **Base Memory**: [X] MB minimum for service startup
+- **Working Set**: [X] MB under normal operational load
+- **Memory Efficiency**: Must not exceed [X] MB under any operational scenario
 
 #### Storage Requirements
 
-- **Database Storage Growth**: [X] GB per month
-- **Log Storage**: [X] GB retention period
-- **Cache Storage**: [X] MB maximum
+- **Data Growth**: Must support [X] GB data growth over [time period]
+- **Storage Efficiency**: Log retention must not exceed [X] GB
+- **Cache Utilization**: Must operate efficiently within [X] MB cache allocation
 
 ## Scalability Requirements
 
-### Horizontal Scaling
+### Horizontal Scaling Capabilities
 
-- **Minimum Instances**: [X] instances
-- **Maximum Instances**: [X] instances
-- **Scaling Triggers**: CPU > [X]% or Memory > [X]%
-- **Scale-Up Time**: < [X] minutes
-- **Scale-Down Time**: < [X] minutes
+- **Scaling Range**: Must support [X] to [X] concurrent instances
+- **Load Distribution**: Must support stateless horizontal scaling
+- **Scaling Characteristics**: Must maintain performance across all scaling levels
 
-### Vertical Scaling
+### Vertical Scaling Capabilities
 
-- **CPU Scaling**: [X] to [X] vCPUs
-- **Memory Scaling**: [X] to [X] GB
-- **Storage Scaling**: [X] to [X] GB
+- **CPU Scalability**: Must efficiently utilize [X] to [X] vCPUs
+- **Memory Scalability**: Must operate effectively with [X] to [X] GB memory
+- **Storage Scalability**: Must handle [X] to [X] GB storage allocation
 
-### Data Scaling
+### Capacity Requirements
 
-- **Database Size**: Support up to [X] GB
-- **Record Count**: Support up to [X] million records
-- **Concurrent Connections**: Support up to [X] connections
+- **User Capacity**: Must support up to [X] concurrent users
+- **Data Capacity**: Must handle up to [X] GB data volume
+- **Transaction Capacity**: Must process up to [X] transactions per [time period]
+- **Connection Capacity**: Must support up to [X] concurrent connections
 
 ## Availability Requirements
 
@@ -292,3 +291,4 @@ This document defines the non-functional requirements specific to [Service Name]
 - [Service Overview](./service-overview.md)
 - [API Contracts](./api-contracts.md)
 - [Deployment Configuration](./deployment-config.md)
+- [Operations Guide](./operations-guide.md)
